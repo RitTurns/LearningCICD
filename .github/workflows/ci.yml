@@ -22,23 +22,61 @@ jobs:
         with:
           node-version: '18'
       
-      - name: Install Playwright dependencies via npx
+      - name: Cache Maven dependencies
+        uses: actions/cache@v3
+        with:
+          path: ~/.m2/repository
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+          restore-keys: |
+            ${{ runner.os }}-maven-
+      
+      - name: Install Playwright browsers
         run: |
+          echo "Installing Playwright browsers..."
           npx --yes playwright@latest install-deps chromium
           npx --yes playwright@latest install chromium
+          echo "Playwright installation complete"
       
-      - name: Build and run tests
-        run: mvn clean test
+      - name: Compile project
+        run: |
+          echo "Compiling project..."
+          mvn clean compile test-compile
+          echo "Compilation complete"
+          echo "Test classes found:"
+          find target/test-classes -name "*.class" -type f | wc -l
+      
+      - name: Run tests
+        run: |
+          echo "Starting test execution..."
+          mvn test -DfailIfNoTests=false
+          echo "Test execution complete"
         env:
           CI: true
+      
+      - name: Display test results
+        if: always()
+        run: |
+          echo "=== Test Results ==="
+          if [ -d "target/surefire-reports" ]; then
+            echo "Test reports found:"
+            ls -la target/surefire-reports/
+            echo ""
+            echo "=== Test Summary ==="
+            grep -h "Tests run:" target/surefire-reports/*.txt 2>/dev/null || echo "No test summaries found"
+          else
+            echo "No test reports generated"
+            echo "Checking target directory:"
+            ls -la target/
+          fi
       
       - name: Upload test results
         uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: test-results
+          name: test-results-${{ github.run_number }}
           path: |
             target/surefire-reports/
-            target/**/*.png
+            target/*.png
+            target/test-classes/
           if-no-files-found: warn
           retention-days: 30
