@@ -27,10 +27,25 @@ jobs:
       - name: Run tests
         run: mvn clean test
       
+      - name: Check test reports
+        run: |
+          echo "Checking for test reports..."
+          if [ -d "target/surefire-reports" ]; then
+            echo "Found surefire-reports directory"
+            ls -la target/surefire-reports/
+          else
+            echo "No surefire-reports directory found"
+            echo "Checking entire target directory:"
+            ls -la target/ || echo "No target directory"
+          fi
+      
       - name: Upload test reports
         uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: surefire-reports
-          path: target/surefire-reports/**
+          name: test-outputs
+          path: |
+            target/surefire-reports/
+            target/site/
+          if-no-files-found: warn
           retention-days: 30
