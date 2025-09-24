@@ -17,14 +17,18 @@ jobs:
           distribution: 'temurin'
           java-version: '17'
       
-      - name: Build project
-        run: mvn clean compile test-compile
+      - name: Setup Node (for Playwright)
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
       
-      - name: Install Playwright Browsers with dependencies
-        run: mvn exec:java -e -D exec.mainClass=com.microsoft.playwright.CLI -D exec.args="install --with-deps"
+      - name: Install Playwright dependencies via npx
+        run: |
+          npx --yes playwright@latest install-deps chromium
+          npx --yes playwright@latest install chromium
       
-      - name: Run Playwright tests
-        run: mvn test
+      - name: Build and run tests
+        run: mvn clean test
         env:
           CI: true
       
@@ -32,8 +36,9 @@ jobs:
         uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: playwright-report
+          name: test-results
           path: |
             target/surefire-reports/
             target/**/*.png
+          if-no-files-found: warn
           retention-days: 30
