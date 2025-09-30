@@ -18,15 +18,10 @@ public class BaseTest {
         // Create playwright and browser once for all tests
         playwright = Playwright.create();
         
-     // Check if running in CI environment
-        boolean isCI = System.getenv("CI") != null;
+     
         
-        BrowserType.LaunchOptions launchOptions = new BrowserType.LaunchOptions();
-        if (isCI) {
-            launchOptions.setHeadless(true);  // Run headless in CI
-        } else {
-            launchOptions.setHeadless(false); // Run headed locally for debugging
-        }
+        BrowserType.LaunchOptions launchOptions = new BrowserType.LaunchOptions().setHeadless(false);  // Run headless in CI
+        System.out.println("Browser launched successfully");
 
     }
     
