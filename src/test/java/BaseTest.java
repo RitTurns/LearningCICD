@@ -20,7 +20,7 @@ public class BaseTest {
         
      
         
-        BrowserType.LaunchOptions launchOptions = new BrowserType.LaunchOptions().setHeadless(false);  // Run headless in CI
+        BrowserType.LaunchOptions launchOptions = new BrowserType.LaunchOptions().setHeadless(true);  // Run headless in CI
         browser = playwright.chromium().launch(launchOptions); // ← THIS LINE WAS MISSING!
         
         System.out.println("Browser launched successfully");
