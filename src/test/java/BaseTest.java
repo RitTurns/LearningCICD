@@ -17,9 +17,17 @@ public class BaseTest {
     static void launchBrowser() {
         // Create playwright and browser once for all tests
         playwright = Playwright.create();
-        browser = playwright.chromium().launch(new BrowserType.LaunchOptions()
-            .setHeadless(false)  // Set to true to hide browser
-            .setSlowMo(500));     // Slows down actions so you can see them
+        
+     // Check if running in CI environment
+        boolean isCI = System.getenv("CI") != null;
+        
+        BrowserType.LaunchOptions launchOptions = new BrowserType.LaunchOptions();
+        if (isCI) {
+            launchOptions.setHeadless(true);  // Run headless in CI
+        } else {
+            launchOptions.setHeadless(false); // Run headed locally for debugging
+        }
+
     }
     
     @AfterAll
