@@ -1,10 +1,18 @@
 name: Playwright Tests
 
-on: [push]
+on:
+  push:
+    branches:
+      - main
+      - master
+  pull_request:
+    branches:
+      - main
+      - master
 
 jobs:
   test:
-    timeout-minutes: 60
+    timeout-minutes: 30
     runs-on: ubuntu-latest
     
     steps:
@@ -17,7 +25,7 @@ jobs:
           distribution: 'temurin'
           java-version: '17'
       
-      - name: Setup Node (for Playwright)
+      - name: Setup Node
         uses: actions/setup-node@v4
         with:
           node-version: '18'
@@ -45,9 +53,9 @@ jobs:
           echo "Test classes found:"
           find target/test-classes -name "*.class" -type f | wc -l
       
-      - name: Run tests
+      - name: Run tests in parallel
         run: |
-          echo "Starting test execution..."
+          echo "Starting parallel test execution with 4 threads..."
           mvn test -DfailIfNoTests=false
           echo "Test execution complete"
         env:
@@ -63,6 +71,15 @@ jobs:
             echo ""
             echo "=== Test Summary ==="
             grep -h "Tests run:" target/surefire-reports/*.txt 2>/dev/null || echo "No test summaries found"
+            echo ""
+            echo "=== Detailed Results ==="
+            for file in target/surefire-reports/*.txt; do
+              if [ -f "$file" ]; then
+                echo "--- $(basename $file) ---"
+                cat "$file"
+                echo ""
+              fi
+            done
           else
             echo "No test reports generated"
             echo "Checking target directory:"
@@ -80,3 +97,12 @@ jobs:
             target/test-classes/
           if-no-files-found: warn
           retention-days: 30
+      
+      - name: Publish Test Report
+        uses: dorny/test-reporter@v1
+        if: always()
+        with:
+          name: Test Results
+          path: target/surefire-reports/*.xml
+          reporter: java-junit
+          fail-on-error: false
