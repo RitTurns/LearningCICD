@@ -34,7 +34,8 @@ public class QuickOrderPage {
     }
     
     public void fillOrderDetails(String bags, String quantity, String lbs) {
-        page.locator("input[type='number'].form-control.text-center").first().fill(bags);
+    	page.waitForTimeout(2000);
+     //   page.locator("input[type='number'].form-control.text-center").first().fill(bags);
         
         Locator secondInput = page.locator("input[type='number'].form-control.text-center").nth(1);
         secondInput.fill(quantity);
