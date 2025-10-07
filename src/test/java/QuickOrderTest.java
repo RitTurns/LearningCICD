@@ -20,22 +20,8 @@ public class QuickOrderTest extends BaseTest {
         quickOrderPage.searchAndSelectFirstCustomer();
         
         // Step 5: Fill order details
-        page.waitForTimeout(2000);
-    	Locator firstInput=page.locator("input[type='number'].form-control.text-center").first();
-        firstInput.waitFor(new Locator.WaitForOptions()
-                .setTimeout(DEFAULT_TIMEOUT));
-    	firstInput.fill("5");
-
-       Locator secondInput = page.locator("input[type='number'].form-control.text-center").nth(1);
-        secondInput.waitFor(new Locator.WaitForOptions().setTimeout(DEFAULT_TIMEOUT));
-        secondInput.fill("10");
-        secondInput.press("Tab");
-
-        Locator thirdInput = page.locator("input[type='number'].form-control.text-center").nth(2);
-        thirdInput.waitFor(new Locator.WaitForOptions().setTimeout(DEFAULT_TIMEOUT));
-        thirdInput.fill("5");
-        thirdInput.press("Tab");
-     //   quickOrderPage.fillOrderDetails("5", "10", "15");
+        
+       quickOrderPage.fillOrderDetails("5", "10", "15");
         
         // Step 6: Click Done
         quickOrderPage.clickDoneButton();

@@ -7,9 +7,18 @@ public class QuickOrderPage {
     private Page page;
     private static final String SEARCH_INPUT = "Search Customers by Name, Phone no., Email address";
     private static final int DEFAULT_TIMEOUT = 10000;
+    private static final int SLOW_MOTION_DELAY = 2000;
     
     public QuickOrderPage(Page page) {
         this.page = page;
+    }
+    
+    private void slowMotion() {
+        try {
+            Thread.sleep(SLOW_MOTION_DELAY);
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+        }
     }
     
     public void navigateToQuickOrder() {
@@ -21,39 +30,40 @@ public class QuickOrderPage {
     }
     
     public void searchAndSelectFirstCustomer() {
+        slowMotion();
         page.getByPlaceholder(SEARCH_INPUT).click();
         System.out.println("✓ Clicked on customer search field");
-        
+        slowMotion();
         page.waitForSelector("li.list-group-item", new Page.WaitForSelectorOptions().setTimeout(5000));
         System.out.println("✓ Customer list is now visible");
-        page.waitForTimeout(2000);
+        slowMotion();
         
         page.locator("li.list-group-item").first().click();
         System.out.println("✓ Clicked on first customer from search results");
-        page.waitForTimeout(2000);
+        slowMotion();
         
         page.waitForTimeout(2000);
         System.out.println("✓ Screen updated with customer details");
-        page.waitForTimeout(2000);
+        slowMotion();
     }
     
     public void fillOrderDetails(String bags, String quantity, String lbs) {
-//    	page.waitForTimeout(2000);
-//    	page.locator("input[type='number'].form-control.text-center").first()
-//        .waitFor(new Locator.WaitForOptions()
-//                .setTimeout(DEFAULT_TIMEOUT));
-//
-//       Locator secondInput = page.locator("input[type='number'].form-control.text-center").nth(1);
-//        secondInput.waitFor(new Locator.WaitForOptions().setTimeout(DEFAULT_TIMEOUT));
-//        secondInput.fill(quantity);
-//        secondInput.press("Tab");
-//
-//        Locator thirdInput = page.locator("input[type='number'].form-control.text-center").nth(2);
-//        thirdInput.waitFor(new Locator.WaitForOptions().setTimeout(DEFAULT_TIMEOUT));
-//        thirdInput.fill(lbs);
-//        thirdInput.press("Tab");
+    	slowMotion();
+    	page.locator("input[type='number'].form-control.text-center").first()
+        .waitFor(new Locator.WaitForOptions()
+                .setTimeout(DEFAULT_TIMEOUT));
+    	slowMotion();
+       Locator secondInput = page.locator("input[type='number'].form-control.text-center").nth(1);
+        secondInput.waitFor(new Locator.WaitForOptions().setTimeout(DEFAULT_TIMEOUT));
+        secondInput.fill(quantity);
+        secondInput.press("Tab");
+        slowMotion();
+        Locator thirdInput = page.locator("input[type='number'].form-control.text-center").nth(2);
+        thirdInput.waitFor(new Locator.WaitForOptions().setTimeout(DEFAULT_TIMEOUT));
+        thirdInput.fill(lbs);
+        thirdInput.press("Tab");
 
-System.out.println("✓ Filled order details");
+        System.out.println("✓ Filled order details");
     	
 //    	page.waitForTimeout(2000);
 //     //   page.locator("input[type='number'].form-control.text-center").first().fill(bags);
