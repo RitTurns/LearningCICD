@@ -1,7 +1,9 @@
 import org.junit.jupiter.api.Test;
 
-public class QuickOrderTest extends BaseTest {
+import com.microsoft.playwright.Locator;
 
+public class QuickOrderTest extends BaseTest {
+	private static final int DEFAULT_TIMEOUT = 10000;
     @Test
     public void testCreateQuickOrderAndVerifyInHub() throws InterruptedException {
         // Step 1: Login to application
@@ -18,7 +20,22 @@ public class QuickOrderTest extends BaseTest {
         quickOrderPage.searchAndSelectFirstCustomer();
         
         // Step 5: Fill order details
-        quickOrderPage.fillOrderDetails("5", "10", "15");
+        page.waitForTimeout(2000);
+    	Locator firstInput=page.locator("input[type='number'].form-control.text-center").first();
+        firstInput.waitFor(new Locator.WaitForOptions()
+                .setTimeout(DEFAULT_TIMEOUT));
+    	firstInput.fill("5");
+
+       Locator secondInput = page.locator("input[type='number'].form-control.text-center").nth(1);
+        secondInput.waitFor(new Locator.WaitForOptions().setTimeout(DEFAULT_TIMEOUT));
+        secondInput.fill("10");
+        secondInput.press("Tab");
+
+        Locator thirdInput = page.locator("input[type='number'].form-control.text-center").nth(2);
+        thirdInput.waitFor(new Locator.WaitForOptions().setTimeout(DEFAULT_TIMEOUT));
+        thirdInput.fill("5");
+        thirdInput.press("Tab");
+     //   quickOrderPage.fillOrderDetails("5", "10", "15");
         
         // Step 6: Click Done
         quickOrderPage.clickDoneButton();

@@ -38,20 +38,20 @@ public class QuickOrderPage {
     }
     
     public void fillOrderDetails(String bags, String quantity, String lbs) {
-    	page.waitForTimeout(2000);
-    	page.locator("input[type='number'].form-control.text-center").first()
-        .waitFor(new Locator.WaitForOptions()
-                .setTimeout(DEFAULT_TIMEOUT));
-
-       Locator secondInput = page.locator("input[type='number'].form-control.text-center").nth(1);
-        secondInput.waitFor(new Locator.WaitForOptions().setTimeout(DEFAULT_TIMEOUT));
-        secondInput.fill(quantity);
-        secondInput.press("Tab");
-
-        Locator thirdInput = page.locator("input[type='number'].form-control.text-center").nth(2);
-        thirdInput.waitFor(new Locator.WaitForOptions().setTimeout(DEFAULT_TIMEOUT));
-        thirdInput.fill(lbs);
-        thirdInput.press("Tab");
+//    	page.waitForTimeout(2000);
+//    	page.locator("input[type='number'].form-control.text-center").first()
+//        .waitFor(new Locator.WaitForOptions()
+//                .setTimeout(DEFAULT_TIMEOUT));
+//
+//       Locator secondInput = page.locator("input[type='number'].form-control.text-center").nth(1);
+//        secondInput.waitFor(new Locator.WaitForOptions().setTimeout(DEFAULT_TIMEOUT));
+//        secondInput.fill(quantity);
+//        secondInput.press("Tab");
+//
+//        Locator thirdInput = page.locator("input[type='number'].form-control.text-center").nth(2);
+//        thirdInput.waitFor(new Locator.WaitForOptions().setTimeout(DEFAULT_TIMEOUT));
+//        thirdInput.fill(lbs);
+//        thirdInput.press("Tab");
 
 System.out.println("✓ Filled order details");
     	
