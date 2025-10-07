@@ -26,15 +26,19 @@ public class QuickOrderPage {
         
         page.waitForSelector("li.list-group-item", new Page.WaitForSelectorOptions().setTimeout(5000));
         System.out.println("✓ Customer list is now visible");
+        page.waitForTimeout(2000);
         
         page.locator("li.list-group-item").first().click();
         System.out.println("✓ Clicked on first customer from search results");
+        page.waitForTimeout(2000);
         
         page.waitForTimeout(2000);
         System.out.println("✓ Screen updated with customer details");
+        page.waitForTimeout(2000);
     }
     
     public void fillOrderDetails(String bags, String quantity, String lbs) {
+    	page.waitForTimeout(2000);
     	page.locator("input[type='number'].form-control.text-center").first()
         .waitFor(new Locator.WaitForOptions()
                 .setTimeout(DEFAULT_TIMEOUT));

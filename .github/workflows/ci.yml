@@ -13,23 +13,23 @@ on:
 jobs:
   test:
     timeout-minutes: 30
-    runs-on: [self-hosted, linux, x64]
+    runs-on: ubuntu-latest
     
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-        
+      
       - name: Set up Java
         uses: actions/setup-java@v4
         with:
           distribution: 'temurin'
           java-version: '17'
-        
+      
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
           node-version: '18'
-        
+      
       - name: Cache Maven dependencies
         uses: actions/cache@v3
         with:
@@ -37,14 +37,14 @@ jobs:
           key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
           restore-keys: |
             ${{ runner.os }}-maven-
-        
+      
       - name: Install Playwright browsers
         run: |
           echo "Installing Playwright browsers..."
           npx --yes playwright@latest install-deps chromium
           npx --yes playwright@latest install chromium
           echo "Playwright installation complete"
-        
+      
       - name: Compile project
         run: |
           echo "Compiling project..."
@@ -52,18 +52,15 @@ jobs:
           echo "Compilation complete"
           echo "Test classes found:"
           find target/test-classes -name "*.class" -type f | wc -l
-        
-      - name: Run tests in headed mode
+      
+      - name: Run tests in parallel
         run: |
-          echo "Starting test execution in headed mode..."
-          export DISPLAY=:99
-          export HEADED=true
+          echo "Starting parallel test execution with 4 threads..."
           mvn test -DfailIfNoTests=false
           echo "Test execution complete"
         env:
           CI: true
-          HEADED: true
-        
+      
       - name: Display test results
         if: always()
         run: |
@@ -88,7 +85,7 @@ jobs:
             echo "Checking target directory:"
             ls -la target/
           fi
-        
+      
       - name: Upload test results
         uses: actions/upload-artifact@v4
         if: always()
@@ -100,7 +97,7 @@ jobs:
             target/test-classes/
           if-no-files-found: warn
           retention-days: 30
-        
+      
       - name: Publish Test Report
         uses: dorny/test-reporter@v1
         if: always()
