@@ -6,6 +6,7 @@ public class QuickOrderPage {
     
     private Page page;
     private static final String SEARCH_INPUT = "Search Customers by Name, Phone no., Email address";
+    private static final int DEFAULT_TIMEOUT = 10000;
     
     public QuickOrderPage(Page page) {
         this.page = page;
@@ -34,14 +35,30 @@ public class QuickOrderPage {
     }
     
     public void fillOrderDetails(String bags, String quantity, String lbs) {
-    	page.waitForTimeout(2000);
-     //   page.locator("input[type='number'].form-control.text-center").first().fill(bags);
-        
-        Locator secondInput = page.locator("input[type='number'].form-control.text-center").nth(1);
-        secondInput.fill(quantity);
-        
-        Locator thirdInput = page.locator("input[type='number'].form-control.text-center").nth(2);
-        thirdInput.fill(lbs);
+    	page.locator("input[type='number'].form-control.text-center").first()
+        .waitFor(new Locator.WaitForOptions()
+                .setTimeout(DEFAULT_TIMEOUT));
+
+Locator secondInput = page.locator("input[type='number'].form-control.text-center").nth(1);
+secondInput.waitFor(new Locator.WaitForOptions().setTimeout(DEFAULT_TIMEOUT));
+secondInput.fill(quantity);
+secondInput.press("Tab");
+
+Locator thirdInput = page.locator("input[type='number'].form-control.text-center").nth(2);
+thirdInput.waitFor(new Locator.WaitForOptions().setTimeout(DEFAULT_TIMEOUT));
+thirdInput.fill(lbs);
+thirdInput.press("Tab");
+
+System.out.println("✓ Filled order details");
+    	
+//    	page.waitForTimeout(2000);
+//     //   page.locator("input[type='number'].form-control.text-center").first().fill(bags);
+//        
+//        Locator secondInput = page.locator("input[type='number'].form-control.text-center").nth(1);
+//        secondInput.fill(quantity);
+//        
+//        Locator thirdInput = page.locator("input[type='number'].form-control.text-center").nth(2);
+//        thirdInput.fill(lbs);
     }
     
     public void clickDoneButton() {
