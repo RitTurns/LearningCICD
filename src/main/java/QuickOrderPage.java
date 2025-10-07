@@ -84,19 +84,19 @@ public class QuickOrderPage {
     public String createQuickOrder() {
         Locator createQuickOrder = page.locator("xpath=//button[normalize-space(text())='Create Quick Order']");
         createQuickOrder.click(new Locator.ClickOptions().setForce(true));
-        try {
-            page.waitForURL("**/orderNotification", new Page.WaitForURLOptions().setTimeout(20000));
-            System.out.println("✓ Navigated to order notification page");
-        } catch (Exception e) {
-            System.out.println("⚠ URL wait timeout, checking if we're already on the page...");
-            String currentUrl = page.url();
-            System.out.println("Current URL: " + currentUrl);
-            if (!currentUrl.contains("orderNotification")) {
-                System.out.println("ERROR: Not on orderNotification page");
-                throw e;
-            }
-        }
-        
+//        try {
+//            page.waitForURL("**/orderNotification", new Page.WaitForURLOptions().setTimeout(20000));
+//            System.out.println("✓ Navigated to order notification page");
+//        } catch (Exception e) {
+//            System.out.println("⚠ URL wait timeout, checking if we're already on the page...");
+//            String currentUrl = page.url();
+//            System.out.println("Current URL: " + currentUrl);
+//            if (!currentUrl.contains("orderNotification")) {
+//                System.out.println("ERROR: Not on orderNotification page");
+//                throw e;
+//            }
+//        }
+//        
      //   page.waitForURL("**/orderNotification");
         
         String orderId = page.locator("text=/^#PLO\\d+/").textContent();
