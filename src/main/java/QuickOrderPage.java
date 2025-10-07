@@ -49,9 +49,10 @@ public class QuickOrderPage {
     
     public void fillOrderDetails(String bags, String quantity, String lbs) {
     	slowMotion();
-    	page.locator("input[type='number'].form-control.text-center").first()
-        .waitFor(new Locator.WaitForOptions()
+    	Locator firstInput=page.locator("input[type='number'].form-control.text-center").first();
+        firstInput.waitFor(new Locator.WaitForOptions()
                 .setTimeout(DEFAULT_TIMEOUT));
+        firstInput.fill(bags);
     	slowMotion();
        Locator secondInput = page.locator("input[type='number'].form-control.text-center").nth(1);
         secondInput.waitFor(new Locator.WaitForOptions().setTimeout(DEFAULT_TIMEOUT));
