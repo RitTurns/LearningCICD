@@ -15,6 +15,13 @@ jobs:
     timeout-minutes: 30
     runs-on: ubuntu-latest
     
+    # ADD THESE PERMISSIONS - This fixes the "Resource not accessible by integration" error
+    permissions:
+      contents: read
+      checks: write
+      pull-requests: write
+      actions: read
+    
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
