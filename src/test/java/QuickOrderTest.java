@@ -1,9 +1,7 @@
 import org.junit.jupiter.api.Test;
 
-import com.microsoft.playwright.Locator;
-
 public class QuickOrderTest extends BaseTest {
-	private static final int DEFAULT_TIMEOUT = 10000;
+	
     @Test
     public void testCreateQuickOrderAndVerifyInHub() throws InterruptedException {
         // Step 1: Login to application

@@ -79,7 +79,7 @@ public class QuickOrderPage {
     public void clickDoneButton() {
         page.getByRole(AriaRole.BUTTON, new Page.GetByRoleOptions().setName("Done")).click();
         System.out.println("✓ Clicked Done button");
-        page.waitForTimeout(500);
+        page.waitForTimeout(1500);
     }
     
     public String createQuickOrder() {
